@@ -24,7 +24,7 @@ class IdeaController extends Controller
 
         $ideas = $user
             ->ideas()
-            ->when(in_array($request->status, IdeaStatus::values()), fn ($query) => $query->where('status', $request->status))
+            ->when(in_array($request->status, IdeaStatus::values()), fn($query) => $query->where('status', $request->status))
             ->latest()
             ->get();
 
@@ -37,18 +37,26 @@ class IdeaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): void {}
+    public function create(): void
+    {
+    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreIdeaRequest $request): RedirectResponse
     {
-        $idea = Auth::user()->ideas()->create($request->safe()->except('steps'));
+        $idea = Auth::user()->ideas()->create($request->safe()->except(['steps', 'image']));
 
         $idea->steps()->createMany(
-            collect($request->steps)->map(fn ($step) => ['description' => $step])
+            collect($request->steps)->map(fn($step) => ['description' => $step])
         );
+
+        if ($request->hasFile('image')) {
+            $idea->update([
+                'image_path' => $request->file('image')->store('ideas', 'public'),
+            ]);
+        }
 
         return to_route('idea.index')
             ->with('success', 'Idea created');
