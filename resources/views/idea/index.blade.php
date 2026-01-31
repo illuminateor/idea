@@ -41,7 +41,7 @@
         </div>
 
         <x-modal name="create-idea" title="New idea">
-            <form x-data="{ status: 'pending', newLink: '', links: [] }" action="{{ route('idea.store') }}" method="POST">
+            <form x-data="{ status: 'pending', newLink: '', links: [], newStep: '', steps: [] }" action="{{ route('idea.store') }}" method="POST">
                 @csrf
                 <div class="space-y-6">
                     <x-form.field label="Title" name="title" placeholder="Enter an idea for your title" required />
@@ -63,6 +63,29 @@
                     </div>
                     <x-form.field label="Description" name="description" type="textarea"
                         placeholder="Describe your idea..." />
+
+                    <div>
+                        <fieldset class="space-x-3">
+                            <legend class="label">Actionable Steps</legend>
+
+                            <template x-for="(step, index) in steps" :key="step">
+                                <div class="flex gap-x-2 items-center">
+                                    <input name="steps[]" x-model="step" class="input">
+                                    <button type="button" @click="steps.splice(index, 1)" class="form-muted-icon"
+                                        aria-label="Remove step"><i class="fa fa-times"></i></button>
+                                </div>
+                            </template>
+
+                            <div class="flex gap-x-2 items-center">
+                                <input x-model="newStep" id="new-step" data-test="new-step"
+                                    placeholder="What needs to be done?" class="input flex-1" spellcheck="false">
+                                <button data-test="submit-new-step-button" :disabled="newStep.trim().length === 0"
+                                    type="button" class="form-muted-icon"
+                                    @click="steps.push(newStep.trim()); newStep = '';" aria-label="Add a new step"><i
+                                        class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </fieldset>
+                    </div>
 
                     <div>
                         <fieldset class="space-x-3">
