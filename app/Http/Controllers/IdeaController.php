@@ -26,7 +26,7 @@ class IdeaController extends Controller
 
         $ideas = $user
             ->ideas()
-            ->when(in_array($request->status, IdeaStatus::values()), fn($query) => $query->where('status', $request->status))
+            ->when(in_array($request->status, IdeaStatus::values()), fn ($query) => $query->where('status', $request->status))
             ->latest()
             ->get();
 
@@ -39,9 +39,7 @@ class IdeaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): void
-    {
-    }
+    public function create(): void {}
 
     /**
      * Store a newly created resource in storage.
