@@ -22,8 +22,6 @@ class UpdateIdea
 
             $idea->steps()->delete();
 
-            // $steps = collect($attributes['steps'] ?? [])->map(fn($step) => ['description' => $step]);
-
             $idea->steps()->createMany($attributes['steps'] ?? []);
         });
     }

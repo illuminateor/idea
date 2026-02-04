@@ -8,7 +8,7 @@ it('shows the initial title', function () {
 
     $idea = Idea::factory()->for($user)->create();
 
-    visit(route('idea.show', $idea))
+    visit(route('idea.show', $idea))->debug()
         ->click('@edit-idea-button')
         ->assertValue('title', $idea->title);
 });

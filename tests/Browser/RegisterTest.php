@@ -6,7 +6,7 @@ it('register a user', function () {
         ->fill('email', 'john@example.com')
         ->fill('password', 'password')
         ->click('Create Account')
-        ->assertPathIs('/');
+        ->assertRoute('idea.index');
 
     $this->assertAuthenticated();
 

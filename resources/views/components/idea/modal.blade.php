@@ -58,8 +58,8 @@
                     <template x-for="(step, index) in steps" :key="step.id || index">
                         <div class="flex gap-x-2 items-center">
                             <input :name="`steps[${index}][description]`" x-model="step.description" class="input">
-                            <input type="hidden" :name="`steps[${index}][completed]`" x-model="step.completed"
-                                class="input">
+                            <input type="hidden" :name="`steps[${index}][completed]`"
+                                x-model="step.completed ? '1' : '0'" class="input">
                             <button type="button" @click="steps.splice(index, 1)" class="form-muted-icon"
                                 aria-label="Remove step"><i class="fa fa-times"></i></button>
                         </div>
